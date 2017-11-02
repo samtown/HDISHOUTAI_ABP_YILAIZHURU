@@ -1,0 +1,82 @@
+﻿@using Dialysis.Common
+@using Dialysis.Dto.Admin;
+@using Dialysis.WebAdmin.Middleware
+@model DoctorSearchInput
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentLoginUser = Context.Session.Get<AdminLoginUserInfo>(CommConstant.AdminLoginCurrentUser);
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit ">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-graduation font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">医生列表</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group btn-group-devided" data-toggle="buttons">
+                        <button type="button" class="btn btn-circle btn-primary" data-toggle="modal" onclick="Edit()">添加医生</button>
+                    </div>
+                </div>
+                <form class="form-horizontal" role="form" asp-controller="Doctor" asp-action="List" method="get" id="searchform">
+                    <input asp-for="PageIndex" hidden />
+                    <input asp-for="Sex" value="-1" hidden />
+                    <input asp-for="DeptId" value="-1" hidden />
+                    <input asp-for="TitleId" value="-1" hidden />
+                    <input asp-for="UserType" value="-1" hidden />
+                    @if (currentLoginUser.IsSuperManager)
+                    {
+                        <div class="form-group col-md-3">
+                            <label class="col-md-4 control-label">医院</label>
+                            <div class="col-md-8">
+                                <select class="form-control" asp-for="HospitalId" asp-items="ViewBag.HospitalList"></select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <button type="button" class="btn btn-success" style="margin-left: 15px;" onclick="ClickSearch()">搜索</button>
+                        </div>
+                        <div style="clear: both;"></div>
+                    }
+                    else
+                    {
+                        <input asp-for="HospitalId" value="-1" hidden />
+                    }
+                </form>
+            </div>
+            <div class="portlet-body" id="datagrid">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+
+</div>
+<div class="modal fade" id="promptmodal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+
+</div>
+<div class="modal fade" id="errormodal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+
+</div>
+<script>
+    $(function () {
+        $("#doctornav").addClass("start active open");
+        Search();
+    })
+
+    function Search() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("List", "Doctor")",
+            data: $("#searchform").serialize(),
+            success: function (data) {
+                $("#datagrid").empty();
+                $("#datagrid").html(data);
+            }
+        });
+    }
+
+    function ClickSearch() {
+        window.location = "@Url.Action("Index", "Doctor", new { pageIndex = 1 })" + "&hospitalId=" + $("#searchform #HospitalId").val();
+    }
+</script>

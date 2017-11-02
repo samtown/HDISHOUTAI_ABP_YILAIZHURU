@@ -1,0 +1,135 @@
+﻿@model Dialysis.Dto.WebApi.FoodNutritionDto
+@{
+    Layout = null;
+    ViewBag.Title = "食物详情";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/common.css" rel="stylesheet" />
+    <link href="~/css/swiper.min.css" rel="stylesheet" />
+    <style>
+        .swiper-container {
+            width: 100%;
+            margin: 15px auto;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .bugingredientsi a img {
+            width: 100%;
+        }
+
+        .bugingredientsi a p {
+            bottom: 15px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="foodinquiry3 col-xs-12">
+                <img src="@Model.Logo" class="mealimg" />
+                <table class="table table-bordered">
+                    <tr>
+                        <td>钾（毫克）</td>
+                        <td>磷（毫克）</td>
+                        <td>蛋白质（克）</td>
+                        <td>脂肪（克）</td>
+                    </tr>
+                    <tr>
+                        <td>@Model.K</td>
+                        <td>@Model.P</td>
+                        <td>@Model.PRO</td>
+                        <td>@Model.Fat</td>
+                    </tr>
+                    <tr>
+                        <td>钠（毫克）</td>
+                        <td>水分（克）</td>
+                        <td>钙（毫克）</td>
+                        <td>铁（毫克）</td>
+                    </tr>
+                    <tr>
+                        <td>@Model.Na</td>
+                        <td>@Model.Water</td>
+                        <td>@Model.Ca</td>
+                        <td>@Model.Fe</td>
+                    </tr>
+                    <tr>
+                        <td>能量（千卡）</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>@Model.Energy</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                @*<div class="taboo col-xs-12">
+                    </div>*@
+                <div class="bugingredientsi col-xs-12" style="margin:0">
+                    <a href="https://shop14920345.koudaitong.com/v2/showcase/goods?alias=3ngj9lyi2y9qp&from=wsc&kdtfrom=wsc" class="col-xs-3" style="padding: 0">
+                        <p>低蛋白 年糕</p>
+                        <img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FiWKHrpJbQokLsvu9nesKFRfItlg.jpg!120x120.jpg">
+                    </a>
+                    <a href="https://shop14920345.koudaitong.com/v2/showcase/goods?alias=1yclno3c7dtsx&from=wsc&kdtfrom=wsc" class="col-xs-3" style="padding: 0">
+                        <p>低蛋白 珍珠面</p>
+                        <img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/Fg9ECILL0yztf5hO9nAzona29qsM.jpg!120x120.jpg">
+                    </a>
+                    <a href="https://shop14920345.koudaitong.com/v2/showcase/goods?alias=3f0al2shtmzqp&from=wsc&kdtfrom=wsc" class="col-xs-3" style="padding: 0">
+                        <p>低蛋白 桂花糕</p>
+                        <img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FkYQMmdt7mHj8cB5uyrrBbwe_in8.jpg!120x120.jpg">
+                    </a>
+                    <a href="https://shop14920345.koudaitong.com/v2/showcase/goods?alias=3nwk33bbpp60x&from=wsc&kdtfrom=wsc" class="col-xs-3" style="padding: 0">
+                        <p>低蛋白 水晶面</p>
+                        <img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/Fm38wXS2-7sr6blEYIePuPsT-4jN.jpg!120x120.jpg">
+                    </a>
+                    <a href="https://shop14920345.koudaitong.com/v2/showcase/goods?alias=2osqdewouhqoh&from=wsc&kdtfrom=wsc" class="col-xs-3" style="padding: 0">
+                        <p>低蛋白 米（1Kg）</p>
+                        <img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FouDlNZQ83F577YugBgFghlVLhWc.jpg!120x120.jpg">
+                    </a>
+                    <a href="https://shop14920345.koudaitong.com/v2/showcase/goods?alias=2fxp7nawmeg5t&from=wsc&kdtfrom=wsc" class="col-xs-3" style="padding: 0">
+                        <p>低蛋白 米（410g）</p>
+                        <img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FlGHU9eyqjfOfncr_6laVfEdxLdk.jpg!120x120.jpg">
+                    </a>
+                    <a href="https://shop14920345.koudaitong.com/v2/showcase/goods?alias=3nfbfr6d7xasx&from=wsc&kdtfrom=wsc" class="col-xs-3" style="padding: 0">
+                        <p>优质低蛋白 大米</p>
+                        <img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/Fj2-hP14_9POpBZSxtWoiyncSa3X.jpg!120x120.jpg">
+                    </a>
+                    <a href="https://shop14920345.koudaitong.com/v2/showcase/goods?alias=2ody2jd439wch&from=wsc&kdtfrom=wsc" class="col-xs-3" style="padding: 0">
+                        <p>低蛋白 饼干</p>
+                        <img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FjKrDMBJJ0eF6J5liLHT911m_RVI.jpg!120x120.jpg">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

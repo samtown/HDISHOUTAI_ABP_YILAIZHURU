@@ -1,0 +1,81 @@
+﻿@using Dialysis.Dto.Admin;
+@model AdminCourseDto
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            @if (Model.Id > 0)
+            {
+                <h4 class="modal-title">编辑课程</h4>
+            }
+            else
+            {
+                <h4 class="modal-title">新增课程</h4>
+            }
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" role="form" asp-controller="Course" asp-action="Edit" method="post" id="editform">
+                <input asp-for="Id" hidden />
+                <div class="form-body">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" asp-for="Category">课程分类</label>
+                        <div class="col-md-6">
+                            <select class="form-control" asp-for="Category" asp-items="ViewBag.CourseCategoryList"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" asp-for="Title">课程标题</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="请输入课程标题" asp-for="Title">
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" asp-for="Content">课程内容</label>
+                        <div class="col-md-6">
+                            <textarea class="form-control" rows="10" placeholder="请输入课程内容" asp-for="Content"></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn dark btn-outline" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn green" onclick="Submit()">保存更改</button>
+        </div>
+    </div>
+</div>
+<script>
+    function Submit() {
+        $.ajax({
+            url: "@Url.Action("Edit", "Course")",
+            type: "POST",
+            data: $("#editform").serialize(),
+            success: function (data) {
+                if (typeof (data.IsSuccess) == "undefined") {
+                    $("#editmodal").empty();
+                    $("#editmodal").html(data);
+                } else {
+                    $("#editmodal").modal("hide");
+                    if (data.IsSuccess) {
+                        $(".modal-backdrop.fade.in").remove();
+                        //提示框
+                        $("#promptmodal").empty();
+                        $("#promptmodal").load("@Url.Action("Message", "Home")" + "?isSuccess=" + data.IsSuccess + "&message=" + data.Message + "&url=" + "@Url.Action("Index", "Course")");
+                        $("#promptmodal").modal("show");
+                    } else {
+                        //错误框
+                        $("#errormodal").empty();
+                        $("#errormodal").load("@Url.Action("Message", "Home")" + "?isSuccess=" + data.IsSuccess + "&message=" + data.Message);
+                        $("#errormodal").modal("show");
+                    }
+                }
+            }
+        });
+    }
+</script>

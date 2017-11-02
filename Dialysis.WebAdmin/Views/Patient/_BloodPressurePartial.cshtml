@@ -1,0 +1,77 @@
+﻿@model long
+@{
+    Layout = null;
+}
+
+<div class="col-md-12">
+    <div class="portlet light portlet-fit ">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject font-dark bold uppercase">血压</span>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div id="echarts_bloodpressure" style="height:300px;"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        require.config({ paths: { echarts: "/assets/global/plugins/echarts/" } }), require(["echarts", "echarts/chart/bar", "echarts/chart/line"], function (e) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetBloodPressureList", "Patient", new { patientId = Model })",
+                success: function (data) {
+                    var timeArr = new Array();
+                    var systolicPressureArr = new Array();
+                    var diastolicPressureArr = new Array();
+                    if (data != null && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            timeArr.push(data[i].MeasureTime);
+                            systolicPressureArr.push(data[i].SystolicPressure);
+                            diastolicPressureArr.push(data[i].DiastolicPressure);
+                        }
+                        var t = e.init(document.getElementById("echarts_bloodpressure"));
+                        t.setOption({
+                            tooltip: { trigger: "axis" },
+                            legend: { data: ["收缩压", "舒张压"] },
+                            toolbox: {
+                                show: !0,
+                                feature: {
+                                    restore: { show: !0, title: '刷新' },
+                                    saveAsImage: { show: !0, title: '保存' }
+                                }
+                            },
+                            calculable: !0,
+                            xAxis: [{
+                                type: "category",
+                                boundaryGap: !1,
+                                data: timeArr,
+                                axisLabel: {
+                                    interval: 0,
+                                    rotate: 30,//倾斜度 -90 至 90 默认为0
+                                }
+                            }],
+                            yAxis: [{ type: "value", axisLabel: { formatter: "{value} mmhg" } }],
+                            series: [{
+                                name: "收缩压",
+                                type: "line",
+                                data: systolicPressureArr,
+                                markPoint: { data: [{ type: "max", name: "最高" }, { type: "min", name: "最低" }] },
+                                markLine: { data: [{ type: "average", name: "平均" }] }
+                            }, {
+                                name: "舒张压",
+                                type: "line",
+                                data: diastolicPressureArr,
+                                markPoint: { data: [{ type: "max", name: "最高" }, { type: "min", name: "最低" }] },
+                                markLine: { data: [{ type: "average", name: "Mean" }] }
+                            }]
+                        });
+                    } else {
+                        $("#echarts_bloodpressure").text("暂无数据")
+                    }
+                }
+            });
+        })
+    });
+</script>

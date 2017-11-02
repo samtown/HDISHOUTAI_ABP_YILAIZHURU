@@ -1,0 +1,259 @@
+﻿@model List<Dialysis.Dto.WebApi.FoodNutritionDto>
+@{
+    Layout = null;
+    ViewBag.Title = "食物列表";
+    int foodType = (int)ViewBag.FoodType;
+    int pageSize = (int)ViewBag.PageSize;
+    int pageIndex = (int)ViewBag.PageIndex;
+    int currentPageTotal = ViewBag.CurrentPageTotal;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/common.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #eeefef;
+        }
+
+        #wrapper {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            bottom: 0;
+            margin-top: 61px;
+            width: 100%;
+        }
+
+        #pullUp {
+            text-align: center;
+            padding-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="foodinquiry-search col-xs-12 form-inline">
+        <div class="input-group">
+            <input type="Search" class="form-control" placeholder="搜索" id="searchName">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" onclick="refresh($('#searchName').val())">搜索</button>
+            </span>
+        </div>
+    </div>
+    <div id="wrapper" class="container">
+        <div id="scroller" class="foodinquiry2 row">
+            <div id="pullDown">
+            </div>
+            <div id="thelist">
+                @foreach (var item in Model)
+                {
+                    <a class="media col-xs-12" href="@Url.Action("FoodDetail", "FoodNutrtion", new { id = item.Id })">
+                        <div class="media-left">
+                            <img class="media-object" src="@item.Logo" alt="...">
+                        </div>
+                        <div style="vertical-align:middle;" class="media-body">
+                            <h4 class="media-heading">@item.FoodName</h4>
+                        </div>
+                        <div class="media-body">
+                            <img class="media-icon-right" src="~/images/icon_right.png" />
+                        </div>
+                    </a>
+                }
+            </div>
+            <div id="pullUp">
+                <span class="pullUpLabel">上拉加载更多...</span>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/iscroll.js"></script>
+    <script>
+        var myScroll,
+                //pullDownEl, pullDownOffset,
+                pullUpEl, pullUpOffset,
+                generatedCount = 0,
+                currentPageIndex = @pageIndex, //当前页码
+                resultCode="",
+                foodName='';
+
+        /**
+         * 下拉刷新 （自定义实现此方法）
+         * myScroll.refresh();        // 数据加载完成后，调用界面更新方法
+         */
+        //function pullDownAction() {
+        //    setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+        //        var el, li, i;
+        //        el = document.getElementById('thelist');
+
+        //        for (i = 0; i < 3; i++) {
+        //            li = document.createElement('li');
+        //            li.innerText = 'Generated row ' + (++generatedCount);
+        //            el.insertBefore(li, el.childNodes[0]);
+        //        }
+
+        //        myScroll.refresh();		//数据加载完成后，调用界面更新方法   Remember to refresh when contents are loaded (ie: on ajax completion)
+        //    }, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+        //}
+
+        /**
+         * 滚动翻页 （自定义实现此方法）
+         * myScroll.refresh();        // 数据加载完成后，调用界面更新方法
+         */
+        function pullUpAction() {
+            setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+                var el, li;
+                el = document.getElementById('thelist');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetFoodList", "FoodNutrtion")',
+                    data: {FoodType: @foodType, FoodName: foodName, PageSize: @pageSize, PageIndex: ++currentPageIndex },
+                    success: function (data) {
+                        if(data.ResultCode=="0") {
+                            resultCode=0;
+                            var json = data.ResultValue;
+                            $(json).each(function (n,value) {
+                                li = document.createElement('a');
+                                li.className = "media col-xs-12";
+                                li.href = "/FoodNutrtion/FoodDetail?id=" + value.Id;
+                                li.innerHTML = '<div class="media-left"><img class="media-object" src=' + value.Logo + ' alt="..."></div><div style="vertical-align:middle;" class="media-body"><h4 class="media-heading">'
+                                    + value.FoodName + '</h4></div><div class="media-body"><img class="media-icon-right" src="/images/icon_right.png" /></div>';
+                                el.appendChild(li, el.childNodes[0]);
+                            })
+                        }
+                        else if(data.ResultCode=="1"){
+                            resultCode=1;
+                        }
+                        myScroll.refresh();		// 数据加载完成后，调用界面更新方法 Remember to refresh when contents are loaded (ie: on ajax completion)
+                    }
+                });
+            }, 0);	// <-- Simulate network congestion, remove setTimeout from production!
+        }
+
+        /**
+         * 初始化iScroll控件
+         */
+        function loaded() {
+            pullDownEl = document.getElementById('pullDown');
+            pullDownOffset = pullDownEl.offsetHeight;
+            pullUpEl = document.getElementById('pullUp');
+            pullUpOffset = pullUpEl.offsetHeight;
+            myScroll = new iScroll('wrapper', {
+                scrollbarClass: 'myScrollbar', /* 重要样式 */
+                useTransition: false, /* 此属性不知用意，本人从true改为false */
+                topOffset: pullDownOffset,
+                onRefresh: function () {
+                    //if (pullDownEl.className.match('loading')) {
+                    //    pullDownEl.className = '';
+                    //    pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                    //} else
+                    if (resultCode==0) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                    }
+                    else if (resultCode==1) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '已全部加载完毕';
+                    }
+                    else if (resultCode==2) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '已全部加载完毕';
+                    }
+                    else if (resultCode==3) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '未搜索到结果';
+                    }
+                },
+                onScrollMove: function () {
+                    //if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                    //    pullDownEl.className = 'flip';
+                    //    pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                    //    this.minScrollY = 0;
+                    //} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                    //    pullDownEl.className = '';
+                    //    pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                    //    this.minScrollY = -pullDownOffset;
+                    //} else
+                    if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'flip';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                        this.maxScrollY = this.maxScrollY;
+                    } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                        this.maxScrollY = pullUpOffset;
+                    }
+                },
+                onScrollEnd: function () {
+                    //if (pullDownEl.className.match('flip')) {
+                    //    pullDownEl.className = 'loading';
+                    //    pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                    //    pullDownAction();	// Execute custom function (ajax call?)
+                    //} else
+                    if (pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'loading';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                        pullUpAction();	// Execute custom function (ajax call?)
+                    }
+                }
+            });
+
+            setTimeout(function () {
+                document.getElementById('wrapper').style.left = '0';
+            }, 0);
+        }
+
+        //初始化绑定iScroll控件
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, false);
+        document.addEventListener('DOMContentLoaded', loaded, false);
+
+        //按食物名称查询并刷新页面
+        function refresh(searchName){
+            foodName = searchName;
+            currentPageIndex = 0;   //初始化页码为
+            var el, li;
+            el = document.getElementById('thelist');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetFoodList", "FoodNutrtion")',
+                data: {FoodType: @foodType, FoodName: searchName, PageSize: @pageSize, PageIndex: ++currentPageIndex },
+                success: function (data) {
+                    el.innerHTML = '';
+                    if(data.ResultCode=="0") {
+                        if(data.ResultValue.length<5){
+                            resultCode=2;
+                        }
+                        else{
+                            resultCode=0;
+                        }
+                        var json = data.ResultValue;
+                        $(json).each(function (n,value) {
+                            li = document.createElement('a');
+                            li.className = "media col-xs-12";
+                            li.href = "/FoodNutrtion/FoodDetail?id=" + value.Id;
+                            li.innerHTML = '<div class="media-left"><img class="media-object" src=' + value.Logo + ' alt="..."></div><div style="vertical-align:middle;" class="media-body"><h4 class="media-heading">'
+                                + value.FoodName + '</h4></div><div class="media-body"><img class="media-icon-right" src="/images/icon_right.png" /></div>';
+                            el.appendChild(li, el.childNodes[0]);
+                        })
+                    }
+                    else if(data.ResultCode=="1"){
+                        resultCode=3;
+                    }
+                    myScroll.refresh();		// 数据加载完成后，调用界面更新方法 Remember to refresh when contents are loaded (ie: on ajax completion)
+                },
+                error: function(){
+                    resultCode=3;
+                    myScroll.refresh();		// 数据加载完成后，调用界面更新方法 Remember to refresh when contents are loaded (ie: on ajax completion)
+                }
+            });
+        }
+    </script>
+</body>
+</html>

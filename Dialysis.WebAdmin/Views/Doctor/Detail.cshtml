@@ -1,0 +1,99 @@
+﻿@using Dialysis.Dto.Admin;
+@model DoctorViewDto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-5">       
+        <div class="profile-sidebar">
+            <div class="portlet light portlet-fit ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <span class="caption-subject font-dark sbold uppercase">医生详情</span>
+                    </div>
+                    <div class="actions">
+                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                            <label class="btn btn-circle grey-salsa btn-sm active">
+                                <input type="radio" name="options" class="toggle" value="@Url.Action("Index", "Doctor", new { pageIndex = ViewBag.PageIndex, hospitalId = ViewBag.HospitalId })" onchange="$.index.pageJump(this)">返回
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet light profile-sidebar-portlet ">
+                <div class="profile-userpic">
+                    @if (string.IsNullOrEmpty(Model.DoctorFace))
+                    {
+                        <img src="~/images/医生.png" class="img-responsive" alt="">
+                    }
+                    else
+                    {
+                        <img src="@Model.DoctorFace" class="img-responsive" alt="">
+                    }
+                </div>
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name">@Model.Name</div>
+                    @*<div class="profile-usertitle-job"></div>*@
+                </div>
+                @*<div class="profile-userbuttons">
+                    <span class="badge badge-info"> 正常 </span>
+                    <span class="badge badge-success"> 175cm </span>
+                    <span class="badge badge-warning"> 72.5Kg </span>
+                    <span class="badge badge-danger"> 120 / 80 </span>
+                </div>*@
+                <div class="profile-usermenu">
+                    <ul class="nav">
+                        <li>
+                            <a href="javascript:;">
+                                <div class="float-right">@Model.Sex</div>
+                                <div>性别</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div class="float-right">@Model.Phone</div>
+                                <div>手机号</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div class="float-right">@Model.Brithdate</div>
+                                <div>出生日期</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div class="float-right">@Model.UserType</div>
+                                <div>用户类型</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div class="float-right">@Model.TitleName</div>
+                                <div>职称</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div class="float-right">@Model.HospitalName</div>
+                                <div>医院</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div class="float-right">@Model.DeptName</div>
+                                <div>科室</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#doctornav").addClass("start active open");
+    })
+</script>

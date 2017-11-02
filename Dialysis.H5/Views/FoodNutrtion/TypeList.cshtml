@@ -1,0 +1,30 @@
+﻿@model List<Dialysis.Dto.WebApi.DictionaryDto>
+@{
+    Layout = null;
+    ViewBag.Title = "食物类型";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/common.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="foodinquiry row">
+            @foreach (var item in Model)
+            {
+                <a href="@Url.Action("FoodList", "FoodNutrtion", new { foodType = item.Id })" class="col-xs-3">
+                    <img src="@item.Logo" />
+                </a>
+            }
+        </div>
+    </div>
+</body>
+</html>

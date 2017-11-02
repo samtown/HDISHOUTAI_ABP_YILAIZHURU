@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dialysis.Domain\Dialysis.Domain.csproj" />
+    <ProjectReference Include="..\Dialysis.Dto\Dialysis.Dto.csproj" />
+    <ProjectReference Include="..\Dialysis.Repository\Dialysis.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

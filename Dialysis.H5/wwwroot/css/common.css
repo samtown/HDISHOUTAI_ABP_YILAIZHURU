@@ -1,0 +1,179 @@
+﻿.foodinquiry-search {
+    padding: 8px;
+    background-color: #eeefef
+}
+
+.foodinquiry-search input {
+    height: 45px;
+    border-radius: 6px
+}
+
+.foodinquiry-search span button {
+    height: 45px;
+    border-radius: 6px
+}
+
+.foodinquiry a {
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px 0
+}
+
+.foodinquiry a:hover {
+    background-color: #f6fbf7
+}
+
+.foodinquiry img {
+    width: 100%
+}
+
+.foodinquiry2 .media {
+    background-color: white;
+    padding: 15px 8px;
+    color: #717071;
+    text-decoration: none;
+    margin: 0 0 15px 0
+}
+
+.foodinquiry2 .media .media-icon-right {
+    width: 12px;
+    height: 22px
+}
+
+.pullUpLabel {
+    color: #717071
+}
+
+.foodinquiry2 .media:hover {
+    background-color: #f6fbf7
+}
+
+.foodinquiry2 .media img {
+    width: 94px;
+    height: 63px
+}
+
+.foodinquiry2 .media .media-body .media-heading:first-child {
+    margin-bottom: 29px
+}
+
+.foodinquiry2 .media .media-body .media-heading:last-child {
+    margin-bottom: 0
+}
+
+.foodinquiry2 .media .media-body .media-heading:last-child div {
+    float: left;
+    width: 33%;
+    font-size: 12px
+}
+
+.foodinquiry2 .media .media-body .media-heading:last-child div img {
+    width: 12px;
+    margin-right: 5px;
+    height: auto
+}
+
+.foodinquiry2 .media .media-body:last-child {
+    width: 20px;
+    font-size: 20px;
+    color: #ccd1cd;
+    vertical-align: middle
+}
+
+.foodinquiry2-introduce {
+    background-color: white;
+    width: 100%;
+    padding: 8px;
+    color: #666;
+    margin-bottom: 15px
+}
+
+.foodinquiry2-introduce div {
+    display: inline-block;
+    width: 32%;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 8px
+}
+
+.foodinquiry2-introduce div img {
+    width: 20px;
+    margin-right: 10px
+}
+
+.foodinquiry3 {
+    padding-top: 15px
+}
+
+.foodinquiry3 img {
+    width: 100%;
+    margin-bottom: 15px
+}
+
+.foodinquiry3 table {
+    margin-bottom: 15px
+}
+
+.foodinquiry3 .table tr:nth-child(2n+1) {
+    background-color: rgba(136, 194, 61, 0.20)
+}
+
+.foodinquiry3 .table-bordered > tbody > tr > td, .meal .table-bordered > tbody > tr > th, .meal .table-bordered > tfoot > tr > td, .meal .table-bordered > tfoot > tr > th, .meal .table-bordered > thead > tr > td, .meal .table-bordered > thead > tr > th {
+    border: 1px solid #b4b5b5
+}
+
+.foodinquiry3 table tr td {
+    width: 25%;
+    text-align: center;
+    font-size: 12px;
+    color: #717071
+}
+
+.foodinquiry3 .col-xs-5, .foodinquiry3 .col-xs-7, .foodinquiry3 .col-xs-12 {
+    margin: 4px 0;
+    padding: 0
+}
+
+.taboo h4, .taboo h5 {
+    color: #717171;
+    font-weight: bold
+}
+
+.bugingredientsi h4 {
+    display: inline;
+    margin-left: 5px
+}
+
+.bugingredientsi h4 a {
+    color: #3db0d4
+}
+
+.bugingredientsi h6 a {
+    color: #3db0d4
+}
+
+.bugingredientsi {
+    margin-bottom: 15px;
+    padding: 0
+}
+
+.bugingredientsi .col-xs-4 {
+    padding: 0;
+    margin-bottom: 10px
+}
+
+.bugingredientsi .col-xs-4 img {
+    width: 100%;
+    margin: 0
+}
+
+.bugingredientsi p {
+    background-color: rgba(0, 0, 0, 0.51);
+    color: white;
+    text-align: center;
+    position: absolute;
+    font-size: 12px;
+    bottom: 0;
+    width: 100%;
+    margin: 0
+}

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <RunWithWarnings>true</RunWithWarnings>
+    <CheckForOverflowUnderflow></CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cuiliang.AliyunOssSdk" Version="0.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dialysis.Common\Dialysis.Common.csproj" />
+    <ProjectReference Include="..\Dialysis.Domain\Dialysis.Domain.csproj" />
+    <ProjectReference Include="..\Dialysis.Dto\Dialysis.Dto.csproj" />
+  </ItemGroup>
+
+</Project>

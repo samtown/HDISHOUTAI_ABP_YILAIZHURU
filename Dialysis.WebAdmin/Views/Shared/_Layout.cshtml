@@ -1,0 +1,199 @@
+﻿@using Dialysis.Common
+@using Dialysis.Dto.Admin
+@using Dialysis.WebAdmin.Middleware
+@{
+    var currentLoginUser = Context.Session.Get<AdminLoginUserInfo>(CommConstant.AdminLoginCurrentUser);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>血透标准版后台</title>
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Preview page of Metronic Admin Theme #2 for echart demos" name="description" />
+    @*<link rel="shortcut icon" href="favicon.ico" />*@
+    <link href="~/assets/pages/css/profile.min.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/common.css" rel="stylesheet" />
+    <style>
+        .profile-sidebar {
+            width: 100%;
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .margin-none {
+            margin: 0;
+        }
+
+        .margin-top-6 {
+            margin-top: 6px;
+        }
+
+        .profile-userpic img {
+            width: 30%;
+        }
+
+        .toolbar {
+            margin-top: 9px;
+        }
+
+        .popover {
+            width: 200px;
+        }
+    </style>
+    <script src="~/js/common.js"></script>
+</head>
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner ">
+            <div class="page-logo">
+                <a href="@Url.Action("Index", "Home")">
+                    <img src="~/images/logo.png" alt="logo" class="logo-default" />
+                </a>
+                <div class="menu-toggler sidebar-toggler">
+                </div>
+            </div>
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+            </a>
+            <div class="page-top">
+                <div class="top-menu">
+                    <ul class="nav navbar-nav pull-right">
+                        <li class="dropdown dropdown-user">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+                                <img alt="" class="img-circle" src="~/images/医生.png">
+                                <span class="username username-hide-on-mobile">@currentLoginUser.LoginName</span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a href="@Url.Action("LogOut", "Account")">
+                                        <i class="icon-key"></i> 退出登录
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="page-container">
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                    <li class="nav-item" id="patientnav">
+                        <a href="javascript:;" class="nav-link nav-toggle" action="@Url.Action("Index", "Patient")" onclick="$.index.sidebarClick(this)">
+                            <i class="icon-users"></i>
+                            <span class="title">患者</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="doctornav">
+                        <a href="javascript:;" class="nav-link nav-toggle" action="@Url.Action("Index", "Doctor")" onclick="$.index.sidebarClick(this)">
+                            <i class="icon-graduation"></i>
+                            <span class="title">医生</span>
+                            <span class="selected"></span>
+                        </a>
+                    </li>
+                    @if (currentLoginUser.IsSuperManager)
+                    {
+                        <li class="nav-item" id="hospitalnav">
+                            <a href="javascript:;" class="nav-link nav-toggle" action="@Url.Action("Index", "Hospital")" onclick="$.index.sidebarClick(this)">
+                                <i class="icon-pointer"></i>
+                                <span class="title">医院</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                    }
+                    <li class="nav-item" id="coursenav">
+                        <a href="javascript:;" class="nav-link nav-toggle" action="@Url.Action("Index", "CourseCategory")" onclick="$.index.sidebarClick(this)">
+                            <i class="icon-book-open"></i>
+                            <span class="title">课程</span>
+                            <span class="selected"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="javascript:;" class="nav-link " action="@Url.Action("Index", "CourseCategory")" onclick="$.index.sidebarItemClick(this)">
+                                    <span class="title">课程类别</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:;" class="nav-link " action="@Url.Action("Index", "Course")" onclick="$.index.sidebarItemClick(this)">
+                                    <span class="title">课程内容</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="statisticsnav">
+                        <a href="javascript:;" class="nav-link nav-toggle" action="@Url.Action("Index", "Statistics")" onclick="$.index.sidebarClick(this)">
+                            <i class="icon-bar-chart"></i>
+                            <span class="title">统计</span>
+                            <span class="selected"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="javascript:;" class="nav-link " action="@Url.Action("Index", "Statistics")" onclick="$.index.sidebarItemClick(this)">
+                                    <span class="title">用户统计</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:;" class="nav-link " action="@Url.Action("Activity", "Statistics")" onclick="$.index.sidebarItemClick(this)">
+                                    <span class="title">活跃度排行</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @if (currentLoginUser.IsSuperManager)
+                    {
+                        <li class="nav-item" id="systemnav">
+                            <a href="javascript:;" class="nav-link nav-toggle" action="@Url.Action("Index", "System")" onclick="$.index.sidebarClick(this)">
+                                <i class="icon-settings"></i>
+                                <span class="title">系统</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                @RenderBody()
+            </div>
+        </div>
+        <a href="javascript:;" class="page-quick-sidebar-toggler">
+            <i class="icon-login"></i>
+        </a>
+    </div>
+    <script src="~/js/layout.js"></script>
+    <script src="~/js/jquery.bs_pagination.js"></script>
+    <script src="~/js/en.min.js"></script>
+    <script>
+
+        $.index = {
+            sidebarClick: function (e) {
+                window.location = $(e).attr("action");
+            },
+
+            sidebarItemClick: function (e) {
+                window.location = $(e).attr("action");
+            },
+
+            pageJump: function (e) {
+                window.location = $(e).val();
+            }
+        }
+    </script>
+</body>
+</html>

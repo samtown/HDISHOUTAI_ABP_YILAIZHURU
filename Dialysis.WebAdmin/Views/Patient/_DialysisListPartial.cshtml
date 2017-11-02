@@ -1,0 +1,77 @@
+﻿@using Dialysis.Dto.Common;
+@using Dialysis.Dto.Admin;
+@model Page<AdminDialysisDto>
+@{
+    Layout = null;
+}
+<div class="table-scrollable table-scrollable-borderless">
+    <table class="table table-hover table-light">
+        <thead>
+            <tr class="uppercase">
+                <th>透析日期</th>
+                <th>班次</th>
+                <th>透析时长</th>
+                <th>床号</th>
+                <th>透析方式</th>
+                <th>上机时间</th>
+                <th>上机护士</th>
+                <th>下机时间</th>
+                <th>下机护士</th>
+                <th>责任医生</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items != null && Model.Items.Count > 0)
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.DialysisDate</td>
+                        <td>@item.ShiftName</td>
+                        <td>@item.DialysisDuration</td>
+                        <td>@item.BedNo</td>
+                        <td>@item.DialysisWay</td>
+                        <td>@item.StartTime</td>
+                        <td>@item.OnNurse</td>
+                        <td>@item.EndTime</td>
+                        <td>@item.OffNurse</td>
+                        <td>@item.Doctor</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<hr style="margin-top: 0">
+<div id="pagetoolbar"></div>
+<script>
+    $(function () {
+        $("#pagetoolbar").bs_pagination({
+            currentPage: @Model.CurrentPage,
+            rowsPerPage: 10,
+            maxRowsPerPage: 100,
+            totalPages: @Model.TotalPages,
+            totalRows: @Model.TotalRecords,
+
+            showGoToPage: true,
+            showRowsPerPage: false,
+            showRowsInfo: false,
+            showRowsDefaultInfo: true,
+
+            onChangePage: function (data, param) { // 点击后返回page_num和rows_per_page
+                $("#PageIndex").val(param.currentPage);
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("DialysisList", "Patient")",
+                    data: $("#searchform").serialize(),
+                    success: function (data) {
+                        $("#datagrid").empty();
+                        $("#datagrid").html(data);
+                    }
+                });
+            },
+            onLoad: function () { // 在插件加载时返回page_num和rows_per_page
+            }
+        });
+    })
+</script>

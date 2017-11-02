@@ -1,0 +1,95 @@
+﻿@model long
+@{
+    Layout = null;
+}
+
+<div class="col-md-12">
+    <div class="portlet light portlet-fit ">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject font-dark bold uppercase">体重</span>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div id="echarts_handring" style="height:300px;"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        require.config({ paths: { echarts: "/assets/global/plugins/echarts/" } }), require(["echarts", "echarts/chart/bar", "echarts/chart/line"], function (e) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetHandRingList", "Patient", new { patientId = Model })",
+                success: function (data) {
+                    var timeArr = new Array();
+                    var stepsArr = new Array();
+                    var distanceArr = new Array();
+                    var sleepTimeArr = new Array();
+                    var energyArr = new Array();
+                    if (data != null && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            timeArr.push(data[i].Date);
+                            stepsArr.push(data[i].Steps);
+                            distanceArr.push(data[i].Distance);
+                            sleepTimeArr.push(data[i].SleepTime);
+                            energyArr.push(data[i].Energy);
+                        }
+                        var t = e.init(document.getElementById("echarts_handring"));
+                        t.setOption({
+                            tooltip: { trigger: "axis" },
+                            legend: { data: ["步数", "距离(米)", "睡眠时间(分钟)", "能量"] },
+                            toolbox: {
+                                show: !0,
+                                feature: {
+                                    restore: { show: !0, title: '刷新' },
+                                    saveAsImage: { show: !0, title: '保存' }
+                                }
+                            },
+                            calculable: !0,
+                            xAxis: [{
+                                type: "category",
+                                boundaryGap: !1,
+                                data: timeArr,
+                                axisLabel: {
+                                    interval: 0,
+                                    rotate: 30,//倾斜度 -90 至 90 默认为0
+                                }
+                            }],
+                            yAxis: [{ type: "value" }],
+                            series: [{
+                                name: "步数",
+                                type: "line",
+                                data: stepsArr,
+                                markPoint: { data: [{ type: "max", name: "最高" }, { type: "min", name: "最低" }] },
+                                markLine: { data: [{ type: "average", name: "平均" }] }
+                            },
+                            {
+                                name: "距离(米)",
+                                type: "line",
+                                data: distanceArr,
+                                markPoint: { data: [{ type: "max", name: "最高" }, { type: "min", name: "最低" }] },
+                                markLine: { data: [{ type: "average", name: "Mean" }] }
+                                },
+                            {
+                                name: "睡眠时间(分钟)",
+                                type: "line",
+                                data: sleepTimeArr,
+                                markPoint: { data: [{ type: "max", name: "最高" }, { type: "min", name: "最低" }] },
+                                markLine: { data: [{ type: "average", name: "Mean" }] }
+                            }, {
+                                name: "能量",
+                                type: "line",
+                                data: energyArr,
+                                markPoint: { data: [{ type: "max", name: "最高" }, { type: "min", name: "最低" }] },
+                                markLine: { data: [{ type: "average", name: "Mean" }] }
+                            }]
+                        });
+                    } else {
+                        $("#echarts_handring").text("暂无数据")
+                    }
+                }
+            });
+        })
+    });
+</script>

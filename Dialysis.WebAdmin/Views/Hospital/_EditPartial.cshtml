@@ -1,0 +1,99 @@
+﻿@using Dialysis.Dto.Admin;
+@model AdminHospitalDto
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            @if (Model.Id > 0)
+            {
+                <h4 class="modal-title">编辑医院</h4>
+            }
+            else
+            {
+                <h4 class="modal-title">新增医院</h4>
+            }
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" role="form" asp-controller="Hospital" asp-action="Edit" method="post" id="editform">
+                <input asp-for="Id" hidden />
+                <div class="form-body">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" asp-for="ProvinceId">省份</label>
+                        <div class="col-md-6">
+                            <select class="form-control" asp-for="ProvinceId" asp-items="ViewBag.ProvinceList"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" asp-for="CityId">城市</label>
+                        <div class="col-md-6">
+                            <select class="form-control" asp-for="CityId" asp-items="ViewBag.CityList"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" asp-for="HospitalName">医院名称</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="请输入医院名称" asp-for="HospitalName">
+                            <span asp-validation-for="HospitalName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn dark btn-outline" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn green" onclick="Submit()">保存更改</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#editform #ProvinceId").change(function () {
+            GetEditCity();
+        });
+    })
+
+    function GetEditCity() {
+        $("#editform #CityId").empty();
+        $.getJSON(
+            "/Hospital/GetCityList",
+            { isAddAll: false, provinceId: $("#editform #ProvinceId").val() },
+            function (data) {
+                $.each(data, function (i, item) {
+                    $("<option></option>").val(item["Id"]).text(item["CityName"]).appendTo($("#editform #CityId"));
+
+                })
+            });
+    }
+
+    function Submit() {
+        $.ajax({
+            url: "@Url.Action("Edit", "Hospital")",
+            type: "POST",
+            data: $("#editform").serialize(),
+            success: function (data) {
+                if (typeof (data.IsSuccess) == "undefined") {
+                    $("#editmodal").empty();
+                    $("#editmodal").html(data);
+                } else {
+                    $("#editmodal").modal("hide");
+                    if (data.IsSuccess) {
+                        $(".modal-backdrop.fade.in").remove();
+                        //提示框
+                        $("#promptmodal").empty();
+                        $("#promptmodal").load("@Url.Action("Message", "Home")" + "?isSuccess=" + data.IsSuccess + "&message=" + data.Message + "&url=" + "@Url.Action("Index", "Hospital")");
+                        $("#promptmodal").modal("show");
+                    } else {
+                        //错误框
+                        $("#errormodal").empty();
+                        $("#errormodal").load("@Url.Action("Message", "Home")" + "?isSuccess=" + data.IsSuccess + "&message=" + data.Message);
+                        $("#errormodal").modal("show");
+                    }
+                }
+            }
+        });
+    }
+</script>

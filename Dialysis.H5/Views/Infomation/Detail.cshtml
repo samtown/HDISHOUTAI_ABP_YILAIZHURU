@@ -1,0 +1,47 @@
+﻿@model Dialysis.Dto.WebApi.InfomationDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>@Model.InfoTitle</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        p {
+            text-indent: 2em;
+            font-family: "Adobe 黑体 Std R",sans-serif;
+            font-size: 16px;
+            line-height: 1.7em;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Adobe 黑体 Std R",sans-serif;
+        }
+
+        img {
+            width: 385px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="info" class="col-md-6 col-md-offset-3">
+                <h4 class="text-center"><strong>@Model.InfoTitle</strong></h4>
+                <h6 class="text-center" style="color:#777;">发布于：@Model.AddTime.ToString("yyyy-MM-dd HH:mm:ss")</h6>
+                @*@if (Model.InfoLogo != "")
+                {
+                    <img src="@Model.InfoLogo" style="width:100%;margin-bottom:10px;" />
+                }*@
+                @Html.Raw(System.Net.WebUtility.HtmlDecode(Model.InfoContent))
+                <h6 class="text-center" style="color:#777"></h6>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
